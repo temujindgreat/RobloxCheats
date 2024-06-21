@@ -44,7 +44,7 @@ v12:CreateToggle(v7("\170\229\38\82\184\151\135\241\43\88\234","\199\235\144\82\
     print(v16)
 end)
 
-v12:CreateSlider(v7("\36\185\164\91\176\51\122\19\253\50\155","\93\226\130\27\176\111"), 0, 100, 50, function(v18)
+v12:CreateSlider("Accuracy Rate", 0, 100, 50, function(v18)
     print("Accuracy Rate: " .. v18)
 end)
 
