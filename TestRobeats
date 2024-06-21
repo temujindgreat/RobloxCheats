@@ -1,18 +1,9 @@
---[[
- .____                  ________ ___.    _____                           __                
- |    |    __ _______   \_____  \\_ |___/ ____\_ __  ______ ____ _____ _/  |_  ___________ 
- |    |   |  |  \__  \   /   |   \| __ \   __\  |  \/  ___// ___\\__  \\   __\/  _ \_  __ \
- |    |___|  |  // __ \_/    |    \ \_\ \  | |  |  /\___ \\  \___ / __ \|  | (  <_> )  | \/
- |_______ \____/(____  /\_______  /___  /__| |____//____  >\___  >____  /__|  \____/|__|   
-         \/          \/         \/    \/                \/     \/     \/                   
-          \_Welcome to LuaObfuscator.com   (Alpha 0.10.4) ~  Much Love, Ferib 
 
-]]--
 
 local v0=string.char;local v1=string.byte;local v2=string.sub;local v3=bit32 or bit ;local v4=v3.bxor;local v5=table.concat;local v6=table.insert;local function v7(v13,v14) local v15={};for v20=1, #v13 do v6(v15,v0(v4(v1(v2(v13,v20,v20 + 1 )),v1(v2(v14,1 + (v20% #v14) ,1 + (v20% #v14) + 1 )))%256 ));end return v5(v15);end local v8=loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Module.Lua"))();local v9=loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Client.Lua"))();v9:Notify({[v7("\229\202\207\41\227","\126\177\163\187\69\134\219\167")]=v7("\0\223\47\193\245\55\222","\156\67\173\74\165"),[v7("\16\178\90\21\174\47\86\32\190\70\24","\38\84\215\41\118\220\70")]=v7("\98\25\32\23\255\68\5\98\33\253\66\31\50\6\190\114\15\98\33\235\93\31\54\33\253\66\31\50\6\237","\158\48\118\66\114")},{[v7("\132\49\4\58\122\171\254\136\43\28\57\97","\155\203\68\112\86\19\197")]=Color3.fromRGB(846 -(745 + 21) ,28 + 52 ,80),[v7("\114\212\59\249","\152\38\189\86\156\32\24\133")]=5,[v7("\200\78\183\67","\38\156\55\199")]=v7("\172\120\122\41\6\120\238","\35\200\29\28\72\115\20\154")});v9:Notify({[v7("\45\182\197\211\136","\84\121\223\177\191\237\76")]=v7("\178\88\207\175","\161\219\54\169\192\90\48\80"),[v7("\109\71\19\38\91\75\16\49\64\77\14","\69\41\34\96")]=v7("\143\192\197\3\18\63\252\212\216\24\9\56\252\202\217\74\1\36\184\198\207\74\78\107\157\209\212\15\23\56\252\219","\75\220\163\183\106\98")},{[v7("\45\175\159\59\208\12\191\168\56\213\13\168","\185\98\218\235\87")]=Color3.fromRGB(80,220 -140 ,313 -233 ),[v7("\255\35\12\227","\202\171\92\71\134\190")]=1 + 4 ,[v7("\29\216\60\141","\232\73\161\76")]=v7("\191\220\68\92\11\183\205","\126\219\185\34\61")});local v10=loadstring(Game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))();local v11=v10:NewWindow(v7("\62\193\92\119\127\99\224","\135\108\174\62\18\30\23\147"));local v12=v11:NewSection(v7("\155\232\35\197","\167\214\137\74\171\120\206\83"));
 
 -- Add a slider to the UI for adjusting accuracy
-v12:CreateSlider(v7("\190\111\210\144\171\145\216\73\187\58\216\120","\126\229\105\7\3\43"), 0, 2, 0, function(value)
+local accuracySlider = v12:CreateSlider(v7("\190\111\210\144\171\145\216\73\187\58\216\120","\126\229\105\7\3\43"), 0, 2, 0, function(value)
     local accuracy_levels = {"Perfect", "Great", "Okay"}
     local accuracy = accuracy_levels[value + 1]
     -- Here you would set the accuracy variable to the selected level
@@ -20,9 +11,13 @@ v12:CreateSlider(v7("\190\111\210\144\171\145\216\73\187\58\216\120","\126\229\1
     print("Accuracy set to: " .. accuracy)
 end)
 
+-- Adjust the slider size (assuming the UI library supports size modification)
+if accuracySlider.SetSize then
+    accuracySlider:SetSize(accuracySlider:GetSize() * 3)
+end
+
 v12:CreateToggle(v7("\170\229\38\82\184\151\135\241\43\88\234","\199\235\144\82\61\152"),function(v16) loadstring(game:HttpGet("https://raw.githubusercontent.com/IayZBoy/RoBeatsAutoPlay/main/AutoPlay.lua"))();print(v16);end);
 local v12=v11:NewSection(v7("\55\26\184\50\2\4","\75\103\118\217"));
-v12:CreateToggle(v7("\244\68\117\17\189\94\147\4\48\89\249\79\145","\126\167\52\16\116\217"),function(v17) local v18=0;while true do if (v18==(0 + 0)) then if v17 then game.Players.LocalPlayer.Character.Humanoid.WalkSpeed=1095 -(87 + 968) ;else game.Players.LocalPlayer.Character.Humanoid.WalkSpeed=70 -54 ;end print(v17);break;end end end);
 v12:CreateButton(v7("\193\32\38\138\161\20\236","\156\168\78\64\224\212\121"),function() local v19=true;game:GetService(v7("\50\253\160\220\46\224\181\219\19\221\160\220\17\231\166\203","\174\103\142\197")).jumpRequest:Connect(function() if v19 then game:GetService(v7("\102\36\94\33\32\76\235","\152\54\72\63\88\69\62")).LocalPlayer.Character:FindFirstChildOfClass(v7("\252\209\227\93\218\203\231\88","\60\180\164\142")):ChangeState(v7("\114\75\8\57\46\227\21","\114\56\62\101\73\71\141"));end end);print(v7("\155\229\210\199\179\236\223","\164\216\137\187"));end);
 local v12=v11:NewSection(v7("\241\244\52\182\175\234\24","\107\178\134\81\210\198\158"));
 v12:CreateButton(v7("\21\15\134\195\234\58\23\194\245\191\35\7\150\245\169\22\7\146\210\185","\202\88\110\226\166"),function() print(v7("\224\3\139\244\193\198\11","\170\163\111\226\151"));end);
