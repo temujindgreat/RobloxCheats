@@ -1,134 +1,88 @@
--- Define your module (replace 'NEVERLOSE' with your actual module name)
-local NEVERLOSE = {}
+local function createDropdownMenu(parent, dropdownName, options, defaultOption, callback)
+    local dropdown = Instance.new("Frame")
+    dropdown.Name = "Dropdown"
+    dropdown.Parent = parent
+    dropdown.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    dropdown.Size = UDim2.new(0.5, 0, 0, 30)
+    dropdown.Position = UDim2.new(0.25, 0, 0.5, 0)
+    dropdown.ClipsDescendants = true
 
--- Function to create a dropdown menu
-function NEVERLOSE:AddDropdown(DropdownName, data, Default, callback)
-    data = data or {}
-    Default = Default or data[1]
-    callback = callback or function() end
+    local uiCorner = Instance.new("UICorner")
+    uiCorner.CornerRadius = UDim.new(0, 5)
+    uiCorner.Parent = dropdown
 
-    -- Create dropdown components
-    local Dropdown = Instance.new("Frame")
-    local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
-    local UICorner = Instance.new("UICorner")
-    local LabelText = Instance.new("TextLabel")
-    local ToggleButton = Instance.new("TextButton")
-    local DropdownItems = Instance.new("Frame")
-    local UIListLayout = Instance.new("UIListLayout")
+    local label = Instance.new("TextLabel")
+    label.Name = "Label"
+    label.Parent = dropdown
+    label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    label.BackgroundTransparency = 1
+    label.Size = UDim2.new(1, -20, 1, 0)
+    label.Font = Enum.Font.SourceSans
+    label.Text = dropdownName
+    label.TextColor3 = Color3.fromRGB(0, 0, 0)
+    label.TextScaled = true
+    label.TextXAlignment = Enum.TextXAlignment.Left
+    label.Position = UDim2.new(0, 10, 0, 0)
 
-    Dropdown.Name = "Dropdown"
-    Dropdown.Parent = Section -- Replace 'Section' with your parent GUI element
-    Dropdown.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    Dropdown.BackgroundTransparency = 1.000
-    Dropdown.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    Dropdown.BorderSizePixel = 0
-    Dropdown.Position = UDim2.new(0.05, 0, 0.601, 0) -- Adjust position as needed
-    Dropdown.Size = UDim2.new(0.9, 0, 0, 30) -- Initial size, adjusts dynamically
-    Dropdown.ZIndex = 5
+    local button = Instance.new("TextButton")
+    button.Name = "Button"
+    button.Parent = dropdown
+    button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    button.BackgroundTransparency = 1
+    button.Size = UDim2.new(1, 0, 1, 0)
+    button.Font = Enum.Font.SourceSans
+    button.Text = "▼"
+    button.TextColor3 = Color3.fromRGB(0, 0, 0)
+    button.TextScaled = true
+    button.TextXAlignment = Enum.TextXAlignment.Right
 
-    UIAspectRatioConstraint.Parent = Dropdown
-    UIAspectRatioConstraint.AspectRatio = 7.000
-    UIAspectRatioConstraint.AspectType = Enum.AspectType.ScaleWithParentSize
+    local itemsFrame = Instance.new("Frame")
+    itemsFrame.Name = "ItemsFrame"
+    itemsFrame.Parent = dropdown
+    itemsFrame.BackgroundColor3 = Color3.fromRGB(240, 240, 240)
+    itemsFrame.Size = UDim2.new(1, 0, 0, #options * 30)
+    itemsFrame.Position = UDim2.new(0, 0, 1, 0)
+    itemsFrame.Visible = false
 
-    UICorner.CornerRadius = UDim.new(0, 3)
-    UICorner.Parent = Dropdown
+    local uiListLayout = Instance.new("UIListLayout")
+    uiListLayout.Parent = itemsFrame
+    uiListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 
-    LabelText.Name = "LabelText"
-    LabelText.Parent = Dropdown
-    LabelText.AnchorPoint = Vector2.new(0, 0.5)
-    LabelText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    LabelText.BackgroundTransparency = 1.000
-    LabelText.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    LabelText.BorderSizePixel = 0
-    LabelText.Position = UDim2.new(0, 5, 0.5, 0)
-    LabelText.Size = UDim2.new(0.8, -20, 0.9, 0)
-    LabelText.ZIndex = 6
-    LabelText.Font = Enum.Font.SourceSansSemibold
-    LabelText.Text = DropdownName or "Dropdown"
-    LabelText.TextColor3 = Color3.fromRGB(0, 0, 0)
-    LabelText.TextScaled = true
-    LabelText.TextSize = 18.000
-    LabelText.TextWrapped = true
-    LabelText.TextXAlignment = Enum.TextXAlignment.Left
-
-    ToggleButton.Name = "ToggleButton"
-    ToggleButton.Parent = Dropdown
-    ToggleButton.AnchorPoint = Vector2.new(1, 0.5)
-    ToggleButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    ToggleButton.BackgroundTransparency = 1.000
-    ToggleButton.Position = UDim2.new(1, -5, 0.5, 0)
-    ToggleButton.Size = UDim2.new(0, 20, 0, 20)
-    ToggleButton.Font = Enum.Font.SourceSans
-    ToggleButton.Text = "▼"
-    ToggleButton.TextColor3 = Color3.fromRGB(0, 0, 0)
-    ToggleButton.TextScaled = true
-    ToggleButton.TextSize = 18.000
-    ToggleButton.TextWrapped = true
-
-    DropdownItems.Name = "DropdownItems"
-    DropdownItems.Parent = Dropdown
-    DropdownItems.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    DropdownItems.BackgroundTransparency = 1.000
-    DropdownItems.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    DropdownItems.BorderSizePixel = 0
-    DropdownItems.Position = UDim2.new(0, 0, 1, 0)
-    DropdownItems.Size = UDim2.new(1, 0, 0, 0)
-    DropdownItems.Visible = false
-    DropdownItems.ZIndex = 6
-
-    UIListLayout.Parent = DropdownItems
-    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    UIListLayout.Padding = UDim.new(0, 5)
-
-    -- Create dropdown items dynamically
-    for i, itemText in ipairs(data) do
-        local ItemButton = Instance.new("TextButton")
-        ItemButton.Name = "ItemButton"
-        ItemButton.Parent = DropdownItems
-        ItemButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        ItemButton.BackgroundTransparency = 1.000
-        ItemButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        ItemButton.Size = UDim2.new(1, 0, 0, 25)
-        ItemButton.Font = Enum.Font.SourceSans
-        ItemButton.Text = itemText
-        ItemButton.TextColor3 = Color3.fromRGB(0, 0, 0)
-        ItemButton.TextSize = 18.000
-        ItemButton.TextWrapped = true
-        ItemButton.MouseButton1Click:Connect(function()
-            LabelText.Text = itemText
-            callback(itemText)
-            DropdownItems.Visible = false
+    for _, option in ipairs(options) do
+        local itemButton = Instance.new("TextButton")
+        itemButton.Name = option
+        itemButton.Parent = itemsFrame
+        itemButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        itemButton.Size = UDim2.new(1, 0, 0, 30)
+        itemButton.Font = Enum.Font.SourceSans
+        itemButton.Text = option
+        itemButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+        itemButton.TextScaled = true
+        itemButton.MouseButton1Click:Connect(function()
+            label.Text = option
+            itemsFrame.Visible = false
+            dropdown:TweenSize(UDim2.new(0.5, 0, 0, 30), "Out", "Quad", 0.3, true)
+            callback(option)
         end)
     end
 
-    -- Function to toggle dropdown visibility
-    local function ToggleDropdown()
-        DropdownItems.Visible = not DropdownItems.Visible
-        if DropdownItems.Visible then
-            Dropdown.Size = UDim2.new(0.9, 0, 0, math.min(#data * 30 + 30, 150)) -- Adjust height based on number of items
+    button.MouseButton1Click:Connect(function()
+        itemsFrame.Visible = not itemsFrame.Visible
+        if itemsFrame.Visible then
+            dropdown:TweenSize(UDim2.new(0.5, 0, 0, #options * 30 + 30), "Out", "Quad", 0.3, true)
         else
-            Dropdown.Size = UDim2.new(0.9, 0, 0, 30)
+            dropdown:TweenSize(UDim2.new(0.5, 0, 0, 30), "Out", "Quad", 0.3, true)
         end
-    end
+    end)
 
-    ToggleButton.MouseButton1Click:Connect(ToggleDropdown)
-
-    -- Function to set the default selection
-    function NEVERLOSE:SetDefault(itemText)
-        LabelText.Text = itemText
-    end
-
-    -- Return object with methods
-    return {
-        Toggle = ToggleDropdown,
-        SetDefault = NEVERLOSE.SetDefault
-    }
+    -- Set the default option
+    label.Text = defaultOption
 end
 
--- Example usage:
-local dropdown = NEVERLOSE:AddDropdown("Select Item", {"Option 1", "Option 2", "Option 3"}, "Option 1", function(selected)
+-- Example usage
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+createDropdownMenu(screenGui, "Select Item", {"Option 1", "Option 2", "Option 3"}, "Option 1", function(selected)
     print("Selected:", selected)
 end)
-
--- Set default selection
-dropdown:SetDefault("Option 2")
